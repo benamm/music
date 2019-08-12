@@ -11,6 +11,7 @@ import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import WebpackAssetsManifest from 'webpack-assets-manifest';
+import AntdScssThemePlugin from 'antd-scss-theme-plugin';
 import nodeExternals from 'webpack-node-externals';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import overrideRules from './lib/overrideRules';
@@ -174,18 +175,29 @@ const config = {
           // Compile Less to CSS
           // https://github.com/webpack-contrib/less-loader
           // Install dependencies before uncommenting: yarn add --dev less-loader less
-          // {
-          //   test: /\.less$/,
-          //   loader: 'less-loader',
-          // },
+          {
+            test: /\.less$/,
+            use: [
+              AntdScssThemePlugin.themify({
+                loader: 'less-loader',
+                options: {
+                  javascriptEnabled: true,
+                },
+              }),
+            ],
+          },
 
           // Compile Sass to CSS
           // https://github.com/webpack-contrib/sass-loader
           // Install dependencies before uncommenting: yarn add --dev sass-loader node-sass
-          // {
-          //   test: /\.(scss|sass)$/,
-          //   loader: 'sass-loader',
-          // },
+          {
+            test: /\.(scss|sass)$/,
+            use: [
+              AntdScssThemePlugin.themify({
+                loader: 'sass-loader',
+              }),
+            ],
+          },
         ],
       },
 
@@ -287,6 +299,14 @@ const config = {
   // Choose a developer tool to enhance debugging
   // https://webpack.js.org/configuration/devtool/#devtool
   devtool: isDebug ? 'cheap-module-inline-source-map' : 'source-map',
+
+  plugins: [
+    // Adds antDesign
+    // https://intoli.com/blog/antd-scss-theme-plugin/
+    new AntdScssThemePlugin(
+      path.join(__dirname, '..', 'src', 'components', 'antThemeVariables.scss'),
+    ),
+  ],
 };
 
 //

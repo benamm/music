@@ -10,29 +10,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import { Layout } from 'antd';
 
 // external-global styles must be imported in your JS.
+import antd from 'antd/dist/antd.less';
 import normalizeCss from 'normalize.css';
 import s from './Layout.css';
 import Header from '../Header';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
 
-class Layout extends React.Component {
+class MasterLayout extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
   };
 
   render() {
     return (
-      <div>
+      <Layout>
         <Header />
         {this.props.children}
         <Feedback />
         <Footer />
-      </div>
+      </Layout>
     );
   }
 }
 
-export default withStyles(normalizeCss, s)(Layout);
+export default withStyles(normalizeCss, s, antd)(MasterLayout);
